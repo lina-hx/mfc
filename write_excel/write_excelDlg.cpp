@@ -151,18 +151,36 @@ HCURSOR Cwrite_excelDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
-void recurse_find_file( CString filePath)
+const int TOP_FOLDER = 0;
+const int CUSTOMER_FOLDER = 1;
+const int DATE_FOLDER = 2;
+
+static int folder_deep = -1;//初始化-1，第一次进入选择的顶层目录TOP_FOLDER变成0
+
+void Cwrite_excelDlg::recurse_find_file( CString filePath)
 {
+	folder_deep++;
+
 	CFileFind fileFinder;
 	filePath += "\\*.*";
 	BOOL bFinished = fileFinder.FindFile(filePath);
 
+	vector<detailed> vec;
 	while(bFinished)
 	{
 		bFinished = fileFinder.FindNextFile();
 		if(fileFinder.IsDirectory() && !fileFinder.IsDots())
-		{
-			 recurse_find_file(fileFinder.GetFilePath());
+	    {
+			CString folder_name = fileFinder.GetFileName();
+			if(folder_deep == 0)//找到的是客户文件夹
+			{
+				_excel_data.set_current_customer(folder_name);
+			}
+			else if(folder_deep == 1)//找到的是日期文件夹
+			{
+				_excel_data.set_current_date(folder_name);
+			}
+			recurse_find_file(fileFinder.GetFilePath());
 		}
 		else
 		{
@@ -171,12 +189,33 @@ void recurse_find_file( CString filePath)
             CString fileExt=fileName.Right(fileName.GetLength()-dotPos);
 			if(fileExt == _T(".jpg"))
 			{
-				AfxMessageBox(fileName);   
+				//28号颁奖晚会背景 15.2x6.75 60 喷绘.jpg
+				int first_blank_pos = fileName.Find(" ");
+				int x_pos = fileName.Find("x",first_blank_pos+1);
+				int seconde_blank_pos = fileName.Find(" ",x_pos+1);
+				int count_pos = fileName.Find(" ",seconde_blank_pos+1);
+
+				CString length = fileName.Mid(first_blank_pos+1,x_pos-first_blank_pos-1);
+				CString height = fileName.Mid(x_pos+1,seconde_blank_pos-x_pos-1);
+				CString count = fileName.Mid(seconde_blank_pos+1,count_pos-seconde_blank_pos-1);
+
+				CString file = fileName.Left(dotPos);
+				detailed record;
+				record.name = file;
+				record.length = _ttoi(length);
+				record.height = _ttoi(height);
+				record.count = _ttoi(count);
+
+				vec.push_back(record);
 			}
 		}
-
 	}
 	fileFinder.Close();
+	if(!vec.empty())
+	{
+		_excel_data.add_one_day_details(vec);
+	}
+	folder_deep--;
 }
 
 void Cwrite_excelDlg::OnBnClickedButton1()
@@ -209,5 +248,7 @@ void Cwrite_excelDlg::OnBnClickedButton1()
         AfxMessageBox("无效的目录，请重新选择");   
 
 	//递归遍历目录
+	filePath.Empty();
+	filePath.Format("%s",  szPath);
 	recurse_find_file(filePath);
 }

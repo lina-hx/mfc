@@ -3,7 +3,7 @@
 //
 
 #pragma once
-
+#include "excel_data.h"
 
 // Cwrite_excelDlg ¶Ô»°¿ò
 class Cwrite_excelDlg : public CDialogEx
@@ -31,4 +31,9 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnBnClickedButton1();
+
+private:
+	void recurse_find_file( CString filePath);
+private:
+	excel_data _excel_data;	
 };
