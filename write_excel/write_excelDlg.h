@@ -4,6 +4,7 @@
 
 #pragma once
 #include "excel_data.h"
+#include "excel_tool.h"
 
 // Cwrite_excelDlg ¶Ô»°¿ò
 class Cwrite_excelDlg : public CDialogEx
@@ -36,4 +37,7 @@ private:
 	void recurse_find_file( CString filePath);
 private:
 	excel_data _excel_data;	
+	excel_tool _excel_tool;
+public:
+	afx_msg void OnBnClickedButton2();
 };

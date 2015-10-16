@@ -1,20 +1,14 @@
-﻿生成启动时间为 2015/10/15 18:32:46。
+﻿生成启动时间为 2015/10/16 12:02:47。
      1>项目“E:\mfc\mfc\write_excel\write_excel.vcxproj”在节点 2 上(Build 个目标)。
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D _MBCS /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\write_excel.pch" /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt write_excel.cpp write_excelDlg.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D _MBCS /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\write_excel.pch" /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt write_excelDlg.cpp
          write_excelDlg.cpp
-         正在生成代码...
-         正在编译...
-         write_excel.cpp
-         正在生成代码...
-       Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\mfc\mfc\Debug\write_excel.exe" /INCREMENTAL /NOLOGO /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /manifestinput:"C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\Include\Manifest\dpiaware.manifest" /DEBUG /PDB:"E:\mfc\mfc\Debug\write_excel.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\mfc\mfc\Debug\write_excel.lib" /MACHINE:X86 Debug\write_excel.res
-         Debug\stdafx.obj
-         Debug\write_excel.obj
-         Debug\write_excelDlg.obj
-         write_excel.vcxproj -> E:\mfc\mfc\Debug\write_excel.exe
-     1>已完成生成项目“E:\mfc\mfc\write_excel\write_excel.vcxproj”(Build 个目标)的操作。
+     1>e:\mfc\mfc\write_excel\write_exceldlg.cpp(253): error C2440: “=”: 无法从“wchar_t [260]”转换为“LPSTR”
+                 与指向的类型无关；转换要求 reinterpret_cast、C 样式转换或函数样式转换
+     1>e:\mfc\mfc\write_excel\write_exceldlg.cpp(262): error C2664: “SHGetPathFromIDListA”: 不能将参数 2 从“wchar_t [260]”转换为“LPSTR”
+                 与指向的类型无关；转换要求 reinterpret_cast、C 样式转换或函数样式转换
+     1>已完成生成项目“E:\mfc\mfc\write_excel\write_excel.vcxproj”(Build 个目标)的操作 - 失败。
 
-生成成功。
+生成失败。
 
-已用时间 00:00:04.87
+已用时间 00:00:00.72

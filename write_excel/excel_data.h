@@ -19,7 +19,7 @@ struct detailed
 		total_price = 0;
 	}
 
-	string name;
+	CString name;
 	unsigned int length;
 	unsigned int height;
 	unsigned int count;
@@ -61,6 +61,15 @@ public:
 		}
 		vector<detailed>& map_vec = it2->second;
 		copy(vec.begin(),vec.end(),back_inserter(map_vec));
+	}
+
+	void output_one_customer_excel()
+	{
+		_all_data_it it = _all_data_map.begin();
+		for(; it != _all_data_map.end(); it++)
+		{
+
+		}
 	}
 
 	void set_current_customer(const CString& cus)

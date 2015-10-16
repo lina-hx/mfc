@@ -63,6 +63,7 @@ BEGIN_MESSAGE_MAP(Cwrite_excelDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDC_BUTTON1, &Cwrite_excelDlg::OnBnClickedButton1)
+	ON_BN_CLICKED(IDC_BUTTON2, &Cwrite_excelDlg::OnBnClickedButton2)
 END_MESSAGE_MAP()
 
 
@@ -97,7 +98,11 @@ BOOL Cwrite_excelDlg::OnInitDialog()
 	SetIcon(m_hIcon, TRUE);			// 设置大图标
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
-	// TODO: 在此添加额外的初始化代码
+	// excel操作
+	CString header = "艺海广告喷绘加工明细表";
+	_excel_tool.init2();
+	_excel_tool.write_header(header);
+	// excel操作
 
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
@@ -190,10 +195,10 @@ void Cwrite_excelDlg::recurse_find_file( CString filePath)
 			if(fileExt == _T(".jpg"))
 			{
 				//28号颁奖晚会背景 15.2x6.75 60 喷绘.jpg
-				int first_blank_pos = fileName.Find(" ");
-				int x_pos = fileName.Find("x",first_blank_pos+1);
-				int seconde_blank_pos = fileName.Find(" ",x_pos+1);
-				int count_pos = fileName.Find(" ",seconde_blank_pos+1);
+				int first_blank_pos = fileName.Find(_T(" "));
+				int x_pos = fileName.Find(_T("x"),first_blank_pos+1);
+				int seconde_blank_pos = fileName.Find(_T(" "),x_pos+1);
+				int count_pos = fileName.Find(_T(" "),seconde_blank_pos+1);
 
 				CString length = fileName.Mid(first_blank_pos+1,x_pos-first_blank_pos-1);
 				CString height = fileName.Mid(x_pos+1,seconde_blank_pos-x_pos-1);
@@ -229,7 +234,7 @@ void Cwrite_excelDlg::OnBnClickedButton1()
     bi.hwndOwner = m_hWnd;   
     bi.pidlRoot = NULL;   
     bi.pszDisplayName = szPath;   
-    bi.lpszTitle ="请选择需要打包的目录：";   
+    bi.lpszTitle = _T("请选择需要打包的目录：");   
     bi.ulFlags = 0;   
     bi.lpfn = NULL;   
     bi.lParam = 0;   
@@ -239,16 +244,22 @@ void Cwrite_excelDlg::OnBnClickedButton1()
 
     if(lp && SHGetPathFromIDList(lp, szPath))   
     {
-        filePath.Format("选择的目录为 %s",  szPath);
+        filePath.Format(_T("选择的目录为 %s"),  szPath);
         AfxMessageBox(filePath); 
 
         
     }
     else   
-        AfxMessageBox("无效的目录，请重新选择");   
+        AfxMessageBox(_T("无效的目录，请重新选择"));   
 
 	//递归遍历目录
 	filePath.Empty();
-	filePath.Format("%s",  szPath);
+	filePath.Format(_T("%s"),  szPath);
 	recurse_find_file(filePath);
+}
+
+
+void Cwrite_excelDlg::OnBnClickedButton2()
+{
+	//_excel_data
 }
