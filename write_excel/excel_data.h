@@ -68,7 +68,17 @@ public:
 		_all_data_it it = _all_data_map.begin();
 		for(; it != _all_data_map.end(); it++)
 		{
-
+			map<CString,vector<detailed> >& one_company = it->second;
+			_one_data_it one_day_it = one_company.begin();
+			for(;one_day_it != one_company.end(); one_day_it++)
+			{
+				vector<detailed>& detail_vec = one_day_it->second;
+				for(vector<detailed>::iterator vec_it = detail_vec.begin(); vec_it!=detail_vec.end();vec_it++)
+				{
+					// write one line every time
+					//write_one_line_data(*it);
+				}
+			}
 		}
 	}
 

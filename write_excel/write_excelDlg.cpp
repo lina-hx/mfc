@@ -256,6 +256,8 @@ void Cwrite_excelDlg::OnBnClickedButton1()
 	filePath.Empty();
 	filePath.Format(_T("%s"),  szPath);
 	recurse_find_file(filePath);
+
+	_excel_data.output_one_customer_excel();
 }
 
 

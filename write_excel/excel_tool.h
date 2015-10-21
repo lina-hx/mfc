@@ -17,6 +17,11 @@ static CString  g_header[9] = {"","时间","文件名","长","高","数量","面积","单价"
 class excel_tool
 {
 public:
+	excel_tool()
+	{
+		_current_row = 1;
+	}
+
 	bool init()
 	{
 		if (!AfxOleInit())
@@ -91,6 +96,7 @@ public:
 		_font.put_Bold(COleVariant((short)TRUE));
 		_range_merge.put_HorizontalAlignment(COleVariant((long)-4108));
 		_range_merge.put_Item(COleVariant((long)1),COleVariant((long)1),COleVariant(customer));
+		_current_row++;
 
 		//时间 文件名 长 高 数量 面积 单价 金额
 		_range = _sheet.get_Range(COleVariant(_T("A2")),COleVariant(_T("H2")));
@@ -104,8 +110,30 @@ public:
 		{
 			_range.put_Item(COleVariant((long)1),COleVariant((long)i),COleVariant(g_header[i]));
 		}
+		_current_row++;
 		_app.put_Visible(true);
 		_app.put_UserControl(true);
+	}
+
+	void write_one_line_data(const detailed& d)
+	{
+		CString left_top,right_bottom;
+		left_top.Format("A%d",_current_row);
+		right_bottom.Format("H%d",_current_row);
+		_range = _sheet.get_Range(COleVariant(left_top),COleVariant(_T(right_bottom)));
+		_range.put_HorizontalAlignment(COleVariant((long)-4108));
+
+		int i = 1;
+		_range.put_Item(COleVariant((long)1),COleVariant((long)i++),COleVariant(_T("12-1"));
+		_range.put_Item(COleVariant((long)1),COleVariant((long)i++),COleVariant(_T(d.name)));
+		_range.put_Item(COleVariant((long)1),COleVariant((long)i++),COleVariant((long)d.length));
+		_range.put_Item(COleVariant((long)1),COleVariant((long)i++),COleVariant((long)d.height));
+		_range.put_Item(COleVariant((long)1),COleVariant((long)i++),COleVariant((long)d.count));
+		_range.put_Item(COleVariant((long)1),COleVariant((long)i++),COleVariant((long)d.area));
+		_range.put_Item(COleVariant((long)1),COleVariant((long)i++),COleVariant((long)d.unit_price));
+		_range.put_Item(COleVariant((long)1),COleVariant((long)i++),COleVariant((long)d.total_price));
+		
+		_current_row++;
 	}
 private:
 	CApplication _app;
@@ -117,5 +145,7 @@ private:
 	CWorkbooks _books;
 	CWorksheet _sheet;
 	CWorksheets _sheets;
+	
+	unsigned int _current_row;
 };
 #endif
