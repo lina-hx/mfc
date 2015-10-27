@@ -4,29 +4,9 @@
 #include <map>
 #include <string>
 #include <vector>
+#include "common_define.h"
+#include "excel_tool.h"
 using namespace std;
-
-struct detailed
-{
-	detailed()
-	{
-		name = "";
-		length = 0;
-		height = 0;
-		count = 0;
-		area = 0;
-		unit_price = 0;
-		total_price = 0;
-	}
-
-	CString name;
-	unsigned int length;
-	unsigned int height;
-	unsigned int count;
-	unsigned int area;
-	unsigned int unit_price;
-	unsigned int total_price;
-};
 
 typedef map<CString,map<CString,vector<detailed> > >::iterator _all_data_it;
 typedef map<CString,vector<detailed> >::iterator _one_data_it;
@@ -35,15 +15,20 @@ class excel_data
 {
 public:
 
-	void add_customer_and_one_day(const CString& customer, const CString& date)
+	void add_customer(const CString& customer)
 	{
 		// a empty vector
 		vector<detailed> vec;
 
 		map<CString,vector<detailed> > tmp;
-		tmp.insert(make_pair(date,vec));
 
 		_all_data_map.insert(make_pair(customer,tmp));
+	}
+
+	void add_one_day(const CString& date)
+	{
+		_all_data_it it = _all_data_map.find(_current_customer);
+
 	}
 
 	void add_one_day_details(const vector<detailed>& vec)
@@ -73,10 +58,10 @@ public:
 			for(;one_day_it != one_company.end(); one_day_it++)
 			{
 				vector<detailed>& detail_vec = one_day_it->second;
-				for(vector<detailed>::iterator vec_it = detail_vec.begin(); vec_it!=detail_vec.end();vec_it++)
+				for(vector<detailed>::const_iterator vec_it = detail_vec.begin(); vec_it!=detail_vec.end();vec_it++)
 				{
 					// write one line every time
-					//write_one_line_data(*it);
+					excel_tool::write_one_line_data(*vec_it);
 				}
 			}
 		}

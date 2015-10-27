@@ -37,7 +37,6 @@ private:
 	void recurse_find_file( CString filePath);
 private:
 	excel_data _excel_data;	
-	excel_tool _excel_tool;
 public:
 	afx_msg void OnBnClickedButton2();
 };

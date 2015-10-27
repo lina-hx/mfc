@@ -8,6 +8,7 @@
 #include "CWorkbooks.h"
 #include "CWorksheet.h"
 #include "CWorksheets.h"
+#include "common_define.h"
 
 static CString g_excel_column[27] = {"","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T"\
 "U","V","W","X","Y","Z"};
@@ -17,12 +18,8 @@ static CString  g_header[9] = {"","时间","文件名","长","高","数量","面积","单价"
 class excel_tool
 {
 public:
-	excel_tool()
-	{
-		_current_row = 1;
-	}
 
-	bool init()
+	static bool init()
 	{
 		if (!AfxOleInit())
 		{   
@@ -64,7 +61,7 @@ public:
 		return true;
 	}
 
-	void init2()
+	static void init2()
 	{
 		if (!AfxOleInit())
 		{   
@@ -85,7 +82,7 @@ public:
 	}
 
 public:
-	void write_header(const CString& customer)
+	static void write_header(const CString& customer)
 	{
 		//客户名称
 		_range_merge = _sheet.get_Range(COleVariant(_T("A1")),COleVariant(_T("H1")));
@@ -115,7 +112,7 @@ public:
 		_app.put_UserControl(true);
 	}
 
-	void write_one_line_data(const detailed& d)
+	static void write_one_line_data(const detailed& d)
 	{
 		CString left_top,right_bottom;
 		left_top.Format("A%d",_current_row);
@@ -124,7 +121,7 @@ public:
 		_range.put_HorizontalAlignment(COleVariant((long)-4108));
 
 		int i = 1;
-		_range.put_Item(COleVariant((long)1),COleVariant((long)i++),COleVariant(_T("12-1"));
+		_range.put_Item(COleVariant((long)1),COleVariant((long)i++),COleVariant(_T("12-1")));
 		_range.put_Item(COleVariant((long)1),COleVariant((long)i++),COleVariant(_T(d.name)));
 		_range.put_Item(COleVariant((long)1),COleVariant((long)i++),COleVariant((long)d.length));
 		_range.put_Item(COleVariant((long)1),COleVariant((long)i++),COleVariant((long)d.height));
@@ -134,18 +131,20 @@ public:
 		_range.put_Item(COleVariant((long)1),COleVariant((long)i++),COleVariant((long)d.total_price));
 		
 		_current_row++;
+		_app.put_Visible(true);
+		_app.put_UserControl(true);
 	}
 private:
-	CApplication _app;
-	CFont0 _font;
-	CRange _range;
-	CRange _range_merge;
-	CRange _cols;
-	CWorkbook _book;
-	CWorkbooks _books;
-	CWorksheet _sheet;
-	CWorksheets _sheets;
+	static CApplication _app;
+	static CFont0 _font;
+	static CRange _range;
+	static CRange _range_merge;
+	static CRange _cols;
+	static CWorkbook _book;
+	static CWorkbooks _books;
+	static CWorksheet _sheet;
+	static CWorksheets _sheets;
 	
-	unsigned int _current_row;
+	static unsigned int _current_row;
 };
 #endif

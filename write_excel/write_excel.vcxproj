@@ -103,6 +103,7 @@
   <ItemGroup>
     <ClInclude Include="CApplication.h" />
     <ClInclude Include="CFont0.h" />
+    <ClInclude Include="common_define.h" />
     <ClInclude Include="CRange.h" />
     <ClInclude Include="CWorkbook.h" />
     <ClInclude Include="CWorkbooks.h" />
@@ -118,6 +119,7 @@
     <ClInclude Include="excel_tool.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="excel_tool.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

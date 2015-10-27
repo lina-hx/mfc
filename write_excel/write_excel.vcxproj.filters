@@ -63,6 +63,9 @@
     <ClInclude Include="excel_tool.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="common_define.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="write_excel.cpp">
@@ -72,6 +75,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="excel_tool.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

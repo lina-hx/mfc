@@ -100,8 +100,8 @@ BOOL Cwrite_excelDlg::OnInitDialog()
 
 	// excel操作
 	CString header = "艺海广告喷绘加工明细表";
-	_excel_tool.init2();
-	_excel_tool.write_header(header);
+	excel_tool::init2();
+	excel_tool::write_header(header);
 	// excel操作
 
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
@@ -180,6 +180,7 @@ void Cwrite_excelDlg::recurse_find_file( CString filePath)
 			if(folder_deep == 0)//找到的是客户文件夹
 			{
 				_excel_data.set_current_customer(folder_name);
+				_excel_data.add_customer(folder_name);
 			}
 			else if(folder_deep == 1)//找到的是日期文件夹
 			{
