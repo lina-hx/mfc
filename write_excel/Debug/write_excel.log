@@ -1,11 +1,13 @@
-﻿生成启动时间为 2015/10/28 14:28:14。
+﻿生成启动时间为 2015/10/28 17:01:17。
      1>项目“E:\mfc\mfc\write_excel\write_excel.vcxproj”在节点 2 上(Build 个目标)。
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D _MBCS /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\write_excel.pch" /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt write_excel.cpp write_excelDlg.cpp
-         write_excelDlg.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D _MBCS /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\write_excel.pch" /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt excel_tool.cpp write_excel.cpp write_excelDlg.cpp
+         excel_tool.cpp
          正在生成代码...
-         正在跳过...(未检测到相关更改)
+         正在编译...
+         write_excelDlg.cpp
          write_excel.cpp
+         正在生成代码...
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\mfc\mfc\Debug\write_excel.exe" /INCREMENTAL /NOLOGO /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /manifestinput:"C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\Include\Manifest\dpiaware.manifest" /DEBUG /PDB:"E:\mfc\mfc\Debug\write_excel.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\mfc\mfc\Debug\write_excel.lib" /MACHINE:X86 Debug\write_excel.res
          Debug\excel_tool.obj
@@ -17,4 +19,4 @@
 
 生成成功。
 
-已用时间 00:00:03.35
+已用时间 00:00:04.34

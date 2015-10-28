@@ -122,6 +122,25 @@ public:
 		_cols = _range.get_EntireColumn();
 		_cols.AutoFit();
 
+		CString area_col;
+		area_col.Format("F%d",1);
+
+		CString length_col;
+		length_col.Format("C%d",1);
+
+		CString height_col;
+		height_col.Format("*D%d",1);
+
+		CString count_col;
+		count_col.Format("*E%d",1);
+
+		CString formula;
+		formula.Format("=");
+		formula += length_col + height_col + count_col;
+
+		_cols = _range.get_Range(COleVariant(area_col),COleVariant(area_col));
+		_cols.put_Formula(COleVariant(formula));
+
 		int i = 1;
 		_range.put_Item(COleVariant((long)1),COleVariant((long)i++),COleVariant(date));
 		_range.put_Item(COleVariant((long)1),COleVariant((long)i++),COleVariant(_T(d.name)));
