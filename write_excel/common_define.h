@@ -15,11 +15,11 @@ struct detailed
 	}
 
 	CString name;
-	unsigned int length;
-	unsigned int height;
+	double length;
+	double height;
 	unsigned int count;
-	unsigned int area;
-	unsigned int unit_price;
-	unsigned int total_price;
+	double area;
+	double unit_price;
+	double total_price;
 };
 #endif

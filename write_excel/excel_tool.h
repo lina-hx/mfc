@@ -112,27 +112,37 @@ public:
 		_app.put_UserControl(true);
 	}
 
-	static void write_one_line_data(const detailed& d)
+	static void write_one_line_data(const CString& date,const detailed& d)
 	{
 		CString left_top,right_bottom;
 		left_top.Format("A%d",_current_row);
 		right_bottom.Format("H%d",_current_row);
 		_range = _sheet.get_Range(COleVariant(left_top),COleVariant(_T(right_bottom)));
 		_range.put_HorizontalAlignment(COleVariant((long)-4108));
+		_cols = _range.get_EntireColumn();
+		_cols.AutoFit();
 
 		int i = 1;
-		_range.put_Item(COleVariant((long)1),COleVariant((long)i++),COleVariant(_T("12-1")));
+		_range.put_Item(COleVariant((long)1),COleVariant((long)i++),COleVariant(date));
 		_range.put_Item(COleVariant((long)1),COleVariant((long)i++),COleVariant(_T(d.name)));
-		_range.put_Item(COleVariant((long)1),COleVariant((long)i++),COleVariant((long)d.length));
-		_range.put_Item(COleVariant((long)1),COleVariant((long)i++),COleVariant((long)d.height));
+		_range.put_Item(COleVariant((long)1),COleVariant((long)i++),COleVariant((double)d.length));
+		_range.put_Item(COleVariant((long)1),COleVariant((long)i++),COleVariant((double)d.height));
 		_range.put_Item(COleVariant((long)1),COleVariant((long)i++),COleVariant((long)d.count));
-		_range.put_Item(COleVariant((long)1),COleVariant((long)i++),COleVariant((long)d.area));
-		_range.put_Item(COleVariant((long)1),COleVariant((long)i++),COleVariant((long)d.unit_price));
-		_range.put_Item(COleVariant((long)1),COleVariant((long)i++),COleVariant((long)d.total_price));
+		_range.put_Item(COleVariant((long)1),COleVariant((long)i++),COleVariant((double)d.area));
+		_range.put_Item(COleVariant((long)1),COleVariant((long)i++),COleVariant((double)d.unit_price));
+		_range.put_Item(COleVariant((long)1),COleVariant((long)i++),COleVariant((double)d.total_price));
 		
 		_current_row++;
 		_app.put_Visible(true);
 		_app.put_UserControl(true);
+	}
+
+	static void close_excel()
+	{
+		_book.ReleaseDispatch();
+		_books.ReleaseDispatch();
+		_app.ReleaseDispatch();
+		_app.Quit();
 	}
 private:
 	static CApplication _app;

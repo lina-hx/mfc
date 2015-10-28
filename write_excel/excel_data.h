@@ -25,10 +25,17 @@ public:
 		_all_data_map.insert(make_pair(customer,tmp));
 	}
 
-	void add_one_day(const CString& date)
+	void add_one_day_for_customer(const CString& cus, const CString& date)
 	{
-		_all_data_it it = _all_data_map.find(_current_customer);
+		_all_data_it it = _all_data_map.find(cus);
+		if(it == _all_data_map.end())
+		{
+			return;
+		}
+		map<CString,vector<detailed> >& tmp = it->second;
 
+		vector<detailed> vec;
+		tmp.insert(make_pair(date,vec));
 	}
 
 	void add_one_day_details(const vector<detailed>& vec)
@@ -48,23 +55,40 @@ public:
 		copy(vec.begin(),vec.end(),back_inserter(map_vec));
 	}
 
-	void output_one_customer_excel()
+	void output_all_customer_excel()
 	{
 		_all_data_it it = _all_data_map.begin();
 		for(; it != _all_data_map.end(); it++)
 		{
-			map<CString,vector<detailed> >& one_company = it->second;
-			_one_data_it one_day_it = one_company.begin();
-			for(;one_day_it != one_company.end(); one_day_it++)
+			output_one_customer_excel(it->first);
+		}
+	}
+
+	void output_one_customer_excel(const CString& cus)
+	{
+		CString header = cus;
+		header += "喷绘加工明细表";
+		excel_tool::init2();
+		excel_tool::write_header(header);
+
+		_all_data_it it = _all_data_map.find(cus);
+		if(it == _all_data_map.end())
+		{
+			return;
+		}
+		map<CString,vector<detailed> >& one_company = it->second;
+		_one_data_it one_day_it = one_company.begin();
+		for(;one_day_it != one_company.end(); one_day_it++)
+		{
+			vector<detailed>& detail_vec = one_day_it->second;
+			for(vector<detailed>::const_iterator vec_it = detail_vec.begin(); vec_it!=detail_vec.end();vec_it++)
 			{
-				vector<detailed>& detail_vec = one_day_it->second;
-				for(vector<detailed>::const_iterator vec_it = detail_vec.begin(); vec_it!=detail_vec.end();vec_it++)
-				{
-					// write one line every time
-					excel_tool::write_one_line_data(*vec_it);
-				}
+				// write one line every time
+				excel_tool::write_one_line_data(one_day_it->first,*vec_it);
 			}
 		}
+
+		excel_tool::close_excel();
 	}
 
 	void set_current_customer(const CString& cus)

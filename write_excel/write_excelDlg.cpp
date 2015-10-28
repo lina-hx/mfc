@@ -98,12 +98,6 @@ BOOL Cwrite_excelDlg::OnInitDialog()
 	SetIcon(m_hIcon, TRUE);			// 设置大图标
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
-	// excel操作
-	CString header = "艺海广告喷绘加工明细表";
-	excel_tool::init2();
-	excel_tool::write_header(header);
-	// excel操作
-
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
@@ -185,6 +179,7 @@ void Cwrite_excelDlg::recurse_find_file( CString filePath)
 			else if(folder_deep == 1)//找到的是日期文件夹
 			{
 				_excel_data.set_current_date(folder_name);
+				_excel_data.add_one_day_for_customer(_excel_data.get_current_customer(),folder_name);
 			}
 			recurse_find_file(fileFinder.GetFilePath());
 		}
@@ -208,8 +203,8 @@ void Cwrite_excelDlg::recurse_find_file( CString filePath)
 				CString file = fileName.Left(dotPos);
 				detailed record;
 				record.name = file;
-				record.length = _ttoi(length);
-				record.height = _ttoi(height);
+				record.length = _ttof(length);
+				record.height = _ttof(height);
 				record.count = _ttoi(count);
 
 				vec.push_back(record);
@@ -258,7 +253,7 @@ void Cwrite_excelDlg::OnBnClickedButton1()
 	filePath.Format(_T("%s"),  szPath);
 	recurse_find_file(filePath);
 
-	_excel_data.output_one_customer_excel();
+	_excel_data.output_all_customer_excel();
 }
 
 
