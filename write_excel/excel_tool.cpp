@@ -12,3 +12,4 @@ CApplication excel_tool::_app;
 	CWorksheets excel_tool::_sheets;
 
 	unsigned int excel_tool::_current_row = 1; 
+	bool excel_tool::_b_init = false;

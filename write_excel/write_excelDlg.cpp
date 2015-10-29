@@ -156,11 +156,22 @@ const int DATE_FOLDER = 2;
 
 static int folder_deep = -1;//初始化-1，第一次进入选择的顶层目录TOP_FOLDER变成0
 
-void Cwrite_excelDlg::recurse_find_file( CString filePath)
+void Cwrite_excelDlg::recurse_find_file( CString filePath,bool only_one_cus)
 {
 	folder_deep++;
 
 	CFileFind fileFinder;
+
+	//专为输出一家公司使用
+	if(folder_deep == 1 && only_one_cus)
+	{
+		int back_slant_Pos=filePath.ReverseFind('\\');
+		CString last_folder=filePath.Right(filePath.GetLength()-back_slant_Pos);
+		_excel_data.set_current_customer(last_folder);
+		_excel_data.add_customer(last_folder);
+	}
+	//专为输出一家公司使用
+
 	filePath += "\\*.*";
 	BOOL bFinished = fileFinder.FindFile(filePath);
 
@@ -193,6 +204,10 @@ void Cwrite_excelDlg::recurse_find_file( CString filePath)
 				//28号颁奖晚会背景 15.2x6.75 60 喷绘.jpg
 				int first_blank_pos = fileName.Find(_T(" "));
 				int x_pos = fileName.Find(_T("x"),first_blank_pos+1);
+				if(-1 == x_pos)
+				{
+					x_pos = fileName.Find(_T("X"),first_blank_pos+1);
+				}
 				int seconde_blank_pos = fileName.Find(_T(" "),x_pos+1);
 				int count_pos = fileName.Find(_T(" "),seconde_blank_pos+1);
 
@@ -219,8 +234,16 @@ void Cwrite_excelDlg::recurse_find_file( CString filePath)
 	folder_deep--;
 }
 
+void Cwrite_excelDlg::clear()
+{
+	folder_deep = -1;
+	_excel_data.clear();
+}
+
 void Cwrite_excelDlg::OnBnClickedButton1()
 {
+	clear();
+
 	char szPath[MAX_PATH];
 	CString filePath;
 
@@ -242,12 +265,13 @@ void Cwrite_excelDlg::OnBnClickedButton1()
     {
         filePath.Format(_T("选择的目录为 %s"),  szPath);
         AfxMessageBox(filePath); 
-
-        
     }
     else   
-        AfxMessageBox(_T("无效的目录，请重新选择"));   
-
+	{
+		AfxMessageBox(_T("无效的目录，请重新选择"));   
+		return;
+	}
+        
 	//递归遍历目录
 	filePath.Empty();
 	filePath.Format(_T("%s"),  szPath);
@@ -259,5 +283,42 @@ void Cwrite_excelDlg::OnBnClickedButton1()
 
 void Cwrite_excelDlg::OnBnClickedButton2()
 {
-	//_excel_data
+	clear();
+
+	char szPath[MAX_PATH];
+	CString filePath;
+
+    ZeroMemory(szPath, sizeof(szPath));   
+
+    BROWSEINFO bi;   
+    bi.hwndOwner = m_hWnd;   
+    bi.pidlRoot = NULL;   
+    bi.pszDisplayName = szPath;   
+    bi.lpszTitle = _T("请选择需要打包的目录：");   
+    bi.ulFlags = 0;   
+    bi.lpfn = NULL;   
+    bi.lParam = 0;   
+    bi.iImage = 0;   
+    //弹出选择目录对话框
+    LPITEMIDLIST lp = SHBrowseForFolder(&bi);   
+
+    if(lp && SHGetPathFromIDList(lp, szPath))   
+    {
+        filePath.Format(_T("选择的目录为 %s"),  szPath);
+        AfxMessageBox(filePath); 
+    }
+    else   
+	{
+		AfxMessageBox(_T("无效的目录，请重新选择"));   
+		return;
+	}
+        
+	//递归遍历目录
+	folder_deep++;
+
+	filePath.Empty();
+	filePath.Format(_T("%s"),  szPath);
+	recurse_find_file(filePath,true);
+
+	_excel_data.output_all_customer_excel();
 }

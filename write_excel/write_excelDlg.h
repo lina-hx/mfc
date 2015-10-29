@@ -34,7 +34,8 @@ public:
 	afx_msg void OnBnClickedButton1();
 
 private:
-	void recurse_find_file( CString filePath);
+	void recurse_find_file( CString filePath, bool only_one_cus = false);
+	void clear();
 private:
 	excel_data _excel_data;	
 public:
