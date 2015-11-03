@@ -4,6 +4,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <iterator>
 #include "common_define.h"
 #include "excel_tool.h"
 using namespace std;

@@ -11,6 +11,9 @@
 #define new DEBUG_NEW
 #endif
 
+const int one_chinese_word_bytes = 2;
+const int ext_len = 6;
+const CString ext_arry[6] = {".jpg",".jpeg",".bmp",".png",".tiff",".gif"}; 
 
 // 用于应用程序“关于”菜单项的 CAboutDlg 对话框
 
@@ -166,7 +169,7 @@ void Cwrite_excelDlg::recurse_find_file( CString filePath,bool only_one_cus)
 	if(folder_deep == 1 && only_one_cus)
 	{
 		int back_slant_Pos=filePath.ReverseFind('\\');
-		CString last_folder=filePath.Right(filePath.GetLength()-back_slant_Pos);
+		CString last_folder=filePath.Right(filePath.GetLength()-back_slant_Pos-1);
 		_excel_data.set_current_customer(last_folder);
 		_excel_data.add_customer(last_folder);
 	}
@@ -199,21 +202,47 @@ void Cwrite_excelDlg::recurse_find_file( CString filePath,bool only_one_cus)
 			CString fileName = fileFinder.GetFileName();
             int dotPos=fileName.ReverseFind('.');
             CString fileExt=fileName.Right(fileName.GetLength()-dotPos);
-			if(fileExt == _T(".jpg"))
+			if(is_valid_ext(fileExt))	
 			{
-				//28号颁奖晚会背景 15.2x6.75 60 喷绘.jpg
+				bool format_error = false;
+				//28号颁奖晚会背景 15.2x6.75 60 喷绘
+				//28号颁奖晚会背景 15.2米x6.75米x3张 喷绘
+				//find first blank
 				int first_blank_pos = fileName.Find(_T(" "));
-				int x_pos = fileName.Find(_T("x"),first_blank_pos+1);
-				if(-1 == x_pos)
+				//find firtst x or X
+				int first_x_pos(-1),seconde_x_pos(-1);
+				first_x_pos = fileName.Find(_T("x"),first_blank_pos+1);
+				int upper_first_x = fileName.Find(_T("X"),first_blank_pos+1);
+				//一个大写一个小写，取前面的
+				if((-1 != first_x_pos)&&(-1 != upper_first_x) && (first_x_pos > upper_first_x))
 				{
-					x_pos = fileName.Find(_T("X"),first_blank_pos+1);
+					first_x_pos = upper_first_x;
 				}
-				int seconde_blank_pos = fileName.Find(_T(" "),x_pos+1);
-				int count_pos = fileName.Find(_T(" "),seconde_blank_pos+1);
+				//两个都是大写X
+				if(-1 == first_x_pos && upper_first_x != -1)
+				{
+					first_x_pos = upper_first_x;
+				}
 
-				CString length = fileName.Mid(first_blank_pos+1,x_pos-first_blank_pos-1);
-				CString height = fileName.Mid(x_pos+1,seconde_blank_pos-x_pos-1);
-				CString count = fileName.Mid(seconde_blank_pos+1,count_pos-seconde_blank_pos-1);
+				//find second x or X
+				seconde_x_pos = fileName.Find(_T("x"),first_x_pos+1);
+				if(-1 == seconde_x_pos)
+				{
+					seconde_x_pos = fileName.Find(_T("X"),first_x_pos+1);
+				}
+				if(-1 == seconde_x_pos || -1 == first_x_pos)
+				{
+					CString error_file = filePath.Left(filePath.GetLength()-3) + fileName;
+					AfxMessageBox(error_file + "\n\n文件名称格式不对，跳过此文件，请检查格式！！！"); 
+					continue;
+				}
+				//find seconde blank
+				int seconde_blank_pos = fileName.Find(_T(" "),seconde_x_pos+1);
+				//int count_pos = fileName.Find(_T(" "),seconde_blank_pos+1);
+
+				CString length = fileName.Mid(first_blank_pos+1,first_x_pos-first_blank_pos-1-one_chinese_word_bytes);
+				CString height = fileName.Mid(first_x_pos+1,seconde_x_pos-first_x_pos-1-one_chinese_word_bytes);
+				CString count = fileName.Mid(seconde_x_pos+1,seconde_blank_pos-seconde_x_pos-1-one_chinese_word_bytes);
 
 				CString file = fileName.Left(dotPos);
 				detailed record;
@@ -263,8 +292,8 @@ void Cwrite_excelDlg::OnBnClickedButton1()
 
     if(lp && SHGetPathFromIDList(lp, szPath))   
     {
-        filePath.Format(_T("选择的目录为 %s"),  szPath);
-        AfxMessageBox(filePath); 
+        //filePath.Format(_T("选择的目录为 %s"),  szPath);
+        //AfxMessageBox(filePath); 
     }
     else   
 	{
@@ -321,4 +350,16 @@ void Cwrite_excelDlg::OnBnClickedButton2()
 	recurse_find_file(filePath,true);
 
 	_excel_data.output_all_customer_excel();
+}
+
+bool Cwrite_excelDlg::is_valid_ext(const CString& ext)
+{
+	for(int i = 0; i < ext_len; i++)
+	{
+		if(ext == ext_arry[i])
+		{
+			return true;
+		}
+	}
+	return false;
 }

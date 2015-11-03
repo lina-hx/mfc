@@ -36,6 +36,7 @@ public:
 private:
 	void recurse_find_file( CString filePath, bool only_one_cus = false);
 	void clear();
+	bool is_valid_ext(const CString& ext);
 private:
 	excel_data _excel_data;	
 public:
