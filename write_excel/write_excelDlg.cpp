@@ -11,6 +11,7 @@
 #define new DEBUG_NEW
 #endif
 
+const int one_word_bytes = 1;
 const int one_chinese_word_bytes = 2;
 const int ext_len = 6;
 const CString ext_arry[6] = {".jpg",".jpeg",".bmp",".png",".tiff",".gif"}; 
@@ -205,8 +206,8 @@ void Cwrite_excelDlg::recurse_find_file( CString filePath,bool only_one_cus)
 			if(is_valid_ext(fileExt))	
 			{
 				bool format_error = false;
-				//28ºÅ°ä½±Íí»á±³¾° 15.2x6.75 60 Åç»æ
-				//28ºÅ°ä½±Íí»á±³¾° 15.2Ã×x6.75Ã×x3ÕÅ Åç»æ
+				
+				//28ºÅ°ä½±Íí»á±³¾° 15.2mx6.75mx3ÕÅ Åç»æ
 				//find first blank
 				int first_blank_pos = fileName.Find(_T(" "));
 				//find firtst x or X
@@ -240,8 +241,8 @@ void Cwrite_excelDlg::recurse_find_file( CString filePath,bool only_one_cus)
 				int seconde_blank_pos = fileName.Find(_T(" "),seconde_x_pos+1);
 				//int count_pos = fileName.Find(_T(" "),seconde_blank_pos+1);
 
-				CString length = fileName.Mid(first_blank_pos+1,first_x_pos-first_blank_pos-1-one_chinese_word_bytes);
-				CString height = fileName.Mid(first_x_pos+1,seconde_x_pos-first_x_pos-1-one_chinese_word_bytes);
+				CString length = fileName.Mid(first_blank_pos+1,first_x_pos-first_blank_pos-1-one_word_bytes);
+				CString height = fileName.Mid(first_x_pos+1,seconde_x_pos-first_x_pos-1-one_word_bytes);
 				CString count = fileName.Mid(seconde_x_pos+1,seconde_blank_pos-seconde_x_pos-1-one_chinese_word_bytes);
 
 				CString file = fileName.Left(dotPos);
@@ -305,6 +306,11 @@ void Cwrite_excelDlg::OnBnClickedButton1()
 	filePath.Empty();
 	filePath.Format(_T("%s"),  szPath);
 	recurse_find_file(filePath);
+	
+	CEdit* p_edit = (CEdit *)this->GetDlgItem(IDC_EDIT1);
+	CString tail;
+	p_edit->GetWindowTextA(tail);
+	_excel_data.set_tail(tail);
 
 	_excel_data.output_all_customer_excel();
 }

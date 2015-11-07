@@ -88,6 +88,7 @@ public:
 				excel_tool::write_one_line_data(one_day_it->first,*vec_it);
 			}
 		}
+		excel_tool::write_tail(_tail);
 		excel_tool::merge_same_date();
 		excel_tool::close_excel();
 	}
@@ -118,6 +119,11 @@ public:
 		_current_customer.Empty();
 		_current_date.Empty();
 	}
+
+	void set_tail(const CString& tail)
+	{
+		_tail = tail;
+	}
 private:
 	//第一个CString是各个客户
 	//第二个map<CString,vector<detailed>>表示这个客户下面所有日期的所有产品
@@ -127,6 +133,7 @@ private:
 
 	CString _current_customer;
 	CString _current_date;
+	CString _tail;
 };
 
 #endif

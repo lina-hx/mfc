@@ -160,6 +160,22 @@ public:
 		_app.put_UserControl(true);
 	}
 
+	static void write_tail(const CString& tail)
+	{
+		_current_row += 4;
+		CString left_top,right_bottom;
+		left_top.Format("A%d",_current_row);
+		right_bottom.Format("H%d",_current_row);
+		_range_merge = _sheet.get_Range(COleVariant(left_top),COleVariant(right_bottom));
+		_range_merge.Merge(COleVariant((short)0));
+		_cols = _range_merge.get_EntireColumn();
+		_cols.AutoFit();
+		_font = _range_merge.get_Font();
+		_font.put_Bold(COleVariant((short)TRUE));
+		_range_merge.put_HorizontalAlignment(COleVariant((long)-4108));
+		_range_merge.put_Item(COleVariant((long)1),COleVariant((long)1),COleVariant(tail));
+	}
+
 	static void merge_same_date()
 	{
 		CString right_bottom;
